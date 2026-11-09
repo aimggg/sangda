@@ -1,0 +1,423 @@
+<title>Sáng Da Skin Check</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: one narrow column built for a phone held in a Zalo chat. Header with language switch, one question card at a time, then a results page that stacks meters, routine, products and an offer. */
+:root {
+  --bg: #F2F5F2;
+  --surface: #FFFFFF;
+  --ink: #14302B;
+  --muted: #566B66;
+  --line: #D3DED9;
+  --accent: #C63D74;
+  --accent-soft: #F8E4EC;
+  --on-accent: #FFFFFF;
+  --good: #2C8466;
+  --warn: #D18A00;
+  --crit: #C23B2B;
+  --font-body: 'Be Vietnam Pro', 'Noto Sans JP', system-ui, sans-serif;
+  --font-display: 'Fraunces', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1F1C;
+    --surface: #172B27;
+    --ink: #E6F0EC;
+    --muted: #9DB3AD;
+    --line: #2B443E;
+    --accent: #F07AA6;
+    --accent-soft: #3A1F2B;
+    --on-accent: #2A0F1B;
+    --good: #52C29B;
+    --warn: #E5A62A;
+    --crit: #EE7766;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1F1C;
+  --surface: #172B27;
+  --ink: #E6F0EC;
+  --muted: #9DB3AD;
+  --line: #2B443E;
+  --accent: #F07AA6;
+  --accent-soft: #3A1F2B;
+  --on-accent: #2A0F1B;
+  --good: #52C29B;
+  --warn: #E5A62A;
+  --crit: #EE7766;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 56px;
+}
+.wrap { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+button { font: inherit; color: inherit; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* header */
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.brand b { font-family: var(--font-display); font-weight: 600; font-size: 24px; letter-spacing: -0.01em; }
+.brand span { font-size: 12px; color: var(--muted); }
+.lang { display: flex; border: 1.5px solid var(--line); border-radius: 999px; padding: 2px; background: var(--surface); }
+.lang button { border: 0; background: transparent; padding: 5px 12px; border-radius: 999px; cursor: pointer; font-size: 13px; color: var(--muted); }
+.lang button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.proto { font-size: 12.5px; color: var(--muted); background: var(--accent-soft); border-radius: 8px; padding: 6px 12px; }
+
+/* intro */
+h1 { font-family: var(--font-display); font-weight: 500; font-size: clamp(26px, 6.5vw, 34px); line-height: 1.2; letter-spacing: -0.015em; margin: 4px 0 0; text-wrap: balance; }
+.lead { color: var(--muted); margin: 0; max-width: 56ch; }
+
+/* question card */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.prog { display: flex; gap: 4px; }
+.prog i { flex: 1; height: 4px; border-radius: 2px; background: var(--line); }
+.prog i.on { background: var(--accent); }
+.prog i.cur { background: var(--ink); }
+.stepno { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+h2 { font-size: 20px; line-height: 1.35; font-weight: 600; margin: 0; text-wrap: balance; }
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: var(--surface); border: 1.5px solid var(--line); border-radius: 10px; padding: 13px 14px; cursor: pointer; min-width: 0; }
+.opt::before { content: ""; flex: none; width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--muted); }
+.opt:hover { border-color: var(--accent); }
+.opt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.opt[aria-pressed="true"]::before { border-color: var(--accent); background: radial-gradient(circle, var(--accent) 0 5px, transparent 5.5px); }
+.row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; }
+.link { background: none; border: 0; padding: 4px 0; cursor: pointer; color: var(--muted); font-size: 13.5px; text-decoration: underline; text-underline-offset: 3px; }
+.link:hover { color: var(--ink); }
+
+/* results */
+.eyebrow { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin: 0; }
+.sec { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+.sec h3 { font-family: var(--font-display); font-weight: 500; font-size: 21px; margin: 0; letter-spacing: -0.01em; }
+.profile { font-family: var(--font-display); font-weight: 500; font-size: clamp(26px, 6.5vw, 32px); line-height: 1.2; margin: 0; text-wrap: balance; }
+.meters { display: flex; flex-direction: column; gap: 16px; }
+.meter { display: flex; flex-direction: column; gap: 6px; }
+.meter .h { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+.meter .h span:last-child { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.bar { position: relative; height: 8px; border-radius: 4px; background: var(--line); }
+.bar i { position: absolute; inset: 0 auto 0 0; border-radius: 4px; }
+.bar b { position: absolute; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: var(--ink); border: 3px solid var(--bg); }
+.ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+.note { font-size: 12.5px; color: var(--muted); margin: 0; }
+.prio { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; display: flex; flex-direction: column; gap: 2px; }
+.prio p { margin: 0; }
+.prio .eyebrow { font-size: 11.5px; }
+.routine { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.routine > div { min-width: 0; }
+.routine dt { font-weight: 600; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.routine dd { margin: 0; }
+.prods { display: flex; flex-direction: column; }
+.prod { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; padding: 14px 0; border-top: 1px solid var(--line); }
+.prod:last-child { border-bottom: 1px solid var(--line); }
+.prod strong { font-weight: 600; }
+.prod p { margin: 0; color: var(--muted); font-size: 13.5px; grid-column: 1; }
+.price { grid-column: 2; grid-row: 1 / span 2; text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+.price small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
+.tag { display: inline-block; font-size: 11.5px; font-weight: 600; background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 1px 8px; margin-left: 6px; vertical-align: 1px; }
+.offer { background: var(--accent-soft); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.deal { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; align-items: baseline; }
+.deal strong { font-weight: 600; }
+.deal p { margin: 0; font-size: 13.5px; color: var(--muted); }
+.deal .price { grid-row: 1 / span 2; }
+.deal s { color: var(--muted); font-weight: 400; font-size: 12.5px; display: block; }
+.deal + .deal { border-top: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); padding-top: 12px; }
+form { display: flex; flex-direction: column; gap: 8px; }
+label { font-size: 13px; font-weight: 600; }
+.field { display: flex; flex-wrap: wrap; gap: 8px; }
+input { flex: 1 1 180px; min-width: 0; font: inherit; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.cta { flex: 1 1 auto; border: 0; border-radius: 10px; padding: 12px 18px; background: var(--accent); color: var(--on-accent); font-weight: 600; cursor: pointer; }
+.cta:hover { filter: brightness(1.06); }
+.msg { margin: 0; font-size: 13px; min-height: 1.2em; }
+.msg.err { color: var(--crit); }
+.fine { font-size: 12.5px; color: var(--muted); margin: 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .opt, .cta { transition: border-color .15s, background-color .15s, filter .15s; }
+}
+</style>
+
+<div class="wrap" id="root"></div>
+
+<script>
+(function () {
+  var Q = [
+    { vi: 'Bạn bao nhiêu tuổi?', ja: '年齢を教えてください',
+      o: [{ vi: '20–24', ja: '20〜24歳' }, { vi: '25–29', ja: '25〜29歳' }, { vi: '30 trở lên', ja: '30歳以上' }] },
+    { vi: 'Mỗi ngày bạn ở ngoài trời bao lâu?', ja: '1日にどのくらい外にいますか？',
+      o: [{ vi: 'Dưới 30 phút, chủ yếu ở trong nhà', ja: '30分未満（ほぼ屋内）' },
+          { vi: '30 phút – 2 giờ, ví dụ đi làm bằng xe máy', ja: '30分〜2時間（バイク通勤など）' },
+          { vi: 'Trên 2 giờ, làm việc hoặc di chuyển ngoài trời nhiều', ja: '2時間以上（屋外の仕事・移動が多い）' }] },
+    { vi: 'Bạn muốn cải thiện điều gì nhất?', ja: 'いちばん改善したいことは？',
+      o: [{ vi: 'Da xỉn màu, thiếu sức sống', ja: 'くすみ・ツヤ不足' },
+          { vi: 'Đốm thâm, màu da không đều', ja: 'シミ・色ムラ' },
+          { vi: 'Vết thâm sau mụn', ja: 'ニキビ跡の色素沈着' },
+          { vi: 'Da sạm đen vì nắng', ja: '日焼けによる黒ずみ' }] },
+    { vi: 'Đến giữa trưa, da bạn thế nào?', ja: 'お昼ごろ、肌はどんな状態ですか？',
+      o: [{ vi: 'Bóng dầu rõ rệt', ja: 'テカりが目立つ' },
+          { vi: 'Vùng chữ T bóng, má bình thường', ja: 'Tゾーンだけテカる' },
+          { vi: 'Khô, căng', ja: '乾燥・つっぱる' }] },
+    { vi: 'Bạn dùng kem chống nắng thường xuyên không?', ja: '日焼け止めはどのくらい使っていますか？',
+      o: [{ vi: 'Mỗi ngày', ja: '毎日' }, { vi: 'Thỉnh thoảng', ja: 'ときどき' }, { vi: 'Gần như không', ja: 'ほとんど使わない' }] },
+    { vi: 'Mỗi ngày bạn dành bao nhiêu thời gian cho skincare?', ja: 'スキンケアにかけられる時間は1日どのくらい？',
+      o: [{ vi: 'Dưới 3 phút', ja: '3分未満' }, { vi: 'Khoảng 5 phút', ja: '5分くらい' }, { vi: '10 phút trở lên', ja: '10分以上' }] }
+  ];
+
+  var S = {
+    proto: { vi: 'Bản thử nghiệm: giá, sản phẩm và thành phần chỉ là ví dụ', ja: '試作版：価格・商品・成分はすべてサンプルです' },
+    tag: { vi: 'tên tạm', ja: '仮称' },
+    h1: { vi: 'Làn da của bạn đang nhận bao nhiêu nắng?', ja: 'あなたの肌は、どれくらい日差しを浴びていますか？' },
+    lead: { vi: '6 câu hỏi, khoảng 1 phút. Vào buổi trưa, chỉ số UV ở TP.HCM thường ở mức rất cao đến cực cao.',
+            ja: '6問・約1分。ホーチミン市の正午のUV指数は、「非常に強い」〜「極端に強い」になることが多い地域です。' },
+    step: { vi: 'Câu {n}/{t}', ja: '質問 {n}/{t}' },
+    back: { vi: '← Quay lại', ja: '← 戻る' },
+    sample: { vi: 'Xem kết quả mẫu', ja: '結果の例を見る' },
+    result: { vi: 'Kết quả của bạn', ja: '診断結果' },
+    meters: { vi: 'Chỉ số tham khảo', ja: '参考指標' },
+    uv: { vi: 'Mức tiếp xúc UV', ja: 'UV負荷' },
+    tone: { vi: 'Độ đều màu da', ja: '色ムラの少なさ' },
+    oil: { vi: 'Cân bằng dầu – ẩm', ja: '皮脂・水分バランス' },
+    oilEnds: { vi: ['Dầu', 'Khô'], ja: ['脂性', '乾燥'] },
+    uvLv: { vi: ['Thấp', 'Trung bình', 'Cao'], ja: ['低', '中', '高'] },
+    toneLv: { vi: ['Khá đều', 'Chưa đều', 'Không đều rõ'], ja: ['均一', 'やや不均一', '不均一'] },
+    oilLv: { vi: ['Da dầu', 'Da hỗn hợp', 'Da khô'], ja: ['脂性', '混合', '乾燥'] },
+    prio: { vi: 'Ưu tiên số 1', ja: 'いちばん先にやること' },
+    prioUv: { vi: 'Chống nắng mỗi ngày. Dù serum tốt đến đâu, nắng mới vẫn làm màu da sậm lại.',
+              ja: '毎日のUV対策。どんなに良い美容液を使っても、新しい日焼けで肌色は戻ってしまいます。' },
+    prioSerum: { vi: 'Dùng serum đều đặn 4 tuần, chụp ảnh trước và sau để so sánh. Chống nắng mỗi sáng là bước đi kèm.',
+                 ja: '美容液を4週間続けて、前後で写真を撮って比べましょう。毎朝のUV対策をセットで。' },
+    routine: { vi: 'Lộ trình mỗi ngày', ja: '毎日のルーティン' },
+    am: { vi: 'Sáng', ja: '朝' }, pm: { vi: 'Tối', ja: '夜' },
+    time0: { vi: 'Chỉ 2 bước mỗi buổi. Thêm kem dưỡng đêm khi có thời gian.', ja: '朝晩とも2ステップ。時間がある日はナイトケアを足します。' },
+    time2: { vi: 'Thoa serum thành hai lớp mỏng, đợi một phút rồi dưỡng.', ja: '美容液は薄く2回に分け、1分なじませてから次へ。' },
+    prods: { vi: 'Bộ sản phẩm dành cho bạn', ja: 'あなた向けのセット' },
+    start: { vi: 'Bắt đầu từ đây', ja: 'ここから' },
+    trial: { vi: 'Bộ dùng thử 14 ngày', ja: '14日間お試しセット' },
+    trialD: { vi: 'Bản mini của cả 3 sản phẩm để thử trước khi mua đủ.', ja: '3商品のミニサイズ。本品を買う前に試せます。' },
+    full: { vi: 'Bộ đầy đủ 3 sản phẩm', ja: 'フルセット（3品）' },
+    save: { vi: 'Tiết kiệm {x}', ja: '{x}お得' },
+    zalo: { vi: 'Số Zalo của bạn', ja: 'Zalo番号' },
+    zph: { vi: '09xx xxx xxx', ja: '09xx xxx xxx' },
+    send: { vi: 'Nhận lộ trình qua Zalo', ja: 'Zaloで結果を受け取る' },
+    zerr: { vi: 'Hãy nhập số Zalo có ít nhất 9 chữ số.', ja: '9桁以上の番号を入力してください。' },
+    zok: { vi: 'Đây là bản thử nghiệm nên thông tin chưa được gửi đi. Khi chạy thật, lộ trình sẽ đến qua Zalo.',
+           ja: '試作版のため、入力内容は送信されません。本番ではZaloに結果とご提案が届きます。' },
+    disc: { vi: 'Kết quả dựa trên câu trả lời của bạn, không thay thế chẩn đoán của bác sĩ da liễu. Nếu da đang viêm, đau hoặc nổi mụn nặng, hãy đi khám.',
+            ja: '回答に基づく目安であり、皮膚科の診断に代わるものではありません。炎症・痛み・重いニキビがある場合は受診してください。' },
+    yen: { vi: '', ja: '円換算は目安（1₫＝約0.006円）' },
+    again: { vi: 'Làm lại', ja: 'もう一度' }
+  };
+
+  var PROFILE = [
+    { n: { vi: 'Da xỉn, thiếu sức sống', ja: 'くすみ・ツヤ不足タイプ' },
+      d: { vi: 'Lớp ngoài của da đang tích tụ tác động của nắng và bụi nên trông kém sáng. Chống nắng đều đặn cùng một serum làm sáng phù hợp là hướng đi hợp lý.',
+           ja: '紫外線やほこりの影響が表面に溜まり、肌が暗く見えている状態。毎日のUV対策と、合う美白美容液で整えやすいタイプです。' },
+      s: { vi: 'Serum vitamin C dẫn xuất, giúp da trông sáng và tươi hơn', ja: 'ビタミンC誘導体配合。肌を明るく見せる美容液' } },
+    { n: { vi: 'Màu da chưa đều', ja: '色ムラ・シミ気味タイプ' },
+      d: { vi: 'Một số vùng sậm hơn phần còn lại, thường do nắng tích lũy theo thời gian. Cần vừa làm sáng vừa chặn nắng mới, nếu không đốm sẽ quay lại.',
+           ja: '部分的に色が濃く見える状態。紫外線の蓄積が主な要因になりやすく、明るくするケアと、新たな日焼けを防ぐケアの両方が必要です。' },
+      s: { vi: 'Serum tranexamic acid và vitamin C dẫn xuất cho vùng màu không đều', ja: 'トラネキサム酸＋ビタミンC誘導体。色ムラが気になる部分に' } },
+    { n: { vi: 'Thâm sau mụn', ja: 'ニキビ跡の色素沈着タイプ' },
+      d: { vi: 'Vết thâm thường sậm hơn khi gặp nắng. Cần sản phẩm nhẹ, không gây bí da, cùng chống nắng kỹ để vết thâm mờ dần.',
+           ja: '日差しを浴びると跡が濃く見えやすい状態。肌に負担の少ない軽い使用感と、しっかりしたUV対策が基本です。' },
+      s: { vi: 'Serum làm sáng vết thâm, kết cấu nhẹ cho da dễ nổi mụn', ja: '跡を明るく見せる軽い美容液。ニキビができやすい肌向け' } },
+    { n: { vi: 'Da sạm nắng', ja: '日焼け・黒ずみタイプ' },
+      d: { vi: 'Da đang sẫm lại do tiếp xúc nắng nhiều. Hãy bắt đầu bằng chống nắng đúng cách và dưỡng ẩm, rồi thêm serum làm sáng.',
+           ja: '日差しを多く浴びて全体が暗く見える状態。まず正しいUV対策と保湿、その上で美白美容液を足す順番が合っています。' },
+      s: { vi: 'Serum làm sáng da sạm, dùng cùng chống nắng mỗi ngày', ja: '黒ずみ肌を明るく見せる美容液。毎日のUV対策とセットで' } }
+  ];
+
+  var PRICE = { uv: 290000, serum: 590000, night: 390000, set: 1190000, trial: 249000 };
+
+  var state = { lang: 'ja', step: 0, ans: [], done: false };
+  try { var saved = localStorage.getItem('sd-lang'); if (saved === 'ja' || saved === 'vi') state.lang = saved; } catch (e) {}
+
+  var root = document.getElementById('root');
+  function t(o) { return o[state.lang]; }
+  function dong(v) { return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '₫'; }
+  function yen(v) { return '約' + (Math.round(v * 0.006 / 10) * 10).toLocaleString('en-US') + '円'; }
+  function priceHtml(v) {
+    return dong(v) + (state.lang === 'ja' ? '<small>' + yen(v) + '</small>' : '');
+  }
+
+  function calc(a) {
+    var age = a[0], sun = a[1], concern = a[2], oil = a[3], spf = a[4], time = a[5];
+    var uv = Math.max(10, Math.round((sun * 2 + spf * 1.5) / 7 * 100));
+    var uvLv = uv < 35 ? 0 : uv < 65 ? 1 : 2;
+    var tone = 80 - [15, 30, 25, 25][concern] - Math.round(uv * 0.2) - (age === 2 ? 5 : 0);
+    tone = Math.max(30, Math.min(90, tone));
+    var toneLv = tone >= 70 ? 0 : tone >= 50 ? 1 : 2;
+    return { uv: uv, uvLv: uvLv, tone: tone, toneLv: toneLv, oilPos: [15, 50, 85][oil], oil: oil, concern: concern, spf: spf, time: time };
+  }
+
+  var LV = ['good', 'warn', 'crit'];
+
+  function header() {
+    return '<div class="top">' +
+      '<div class="brand"><b>Sáng Da</b><span>' + t(S.tag) + '</span></div>' +
+      '<div class="lang" role="group" aria-label="Language">' +
+        '<button type="button" data-lang="vi" aria-pressed="' + (state.lang === 'vi') + '">Tiếng Việt</button>' +
+        '<button type="button" data-lang="ja" aria-pressed="' + (state.lang === 'ja') + '">日本語</button>' +
+      '</div></div>' +
+      '<div class="proto">' + t(S.proto) + '</div>';
+  }
+
+  function questionView() {
+    var q = Q[state.step], sel = state.ans[state.step];
+    var prog = Q.map(function (_, i) { return '<i class="' + (i < state.step ? 'on' : i === state.step ? 'cur' : '') + '"></i>'; }).join('');
+    var opts = q.o.map(function (o, i) {
+      return '<button type="button" class="opt" data-opt="' + i + '" aria-pressed="' + (sel === i) + '">' + t(o) + '</button>';
+    }).join('');
+    return '<div><h1>' + t(S.h1) + '</h1></div>' +
+      '<p class="lead">' + t(S.lead) + '</p>' +
+      '<section class="card" aria-live="polite">' +
+        '<div class="prog" aria-hidden="true">' + prog + '</div>' +
+        '<div class="stepno">' + t(S.step).replace('{n}', state.step + 1).replace('{t}', Q.length) + '</div>' +
+        '<h2>' + t(q) + '</h2>' +
+        '<div class="opts">' + opts + '</div>' +
+        '<div class="row">' +
+          (state.step > 0 ? '<button type="button" class="link" data-act="back">' + t(S.back) + '</button>' : '<span></span>') +
+          '<button type="button" class="link" data-act="sample">' + t(S.sample) + '</button>' +
+        '</div>' +
+      '</section>';
+  }
+
+  function resultView() {
+    var r = calc(state.ans);
+    var p = PROFILE[r.concern];
+    var dry = r.oil === 2;
+    var uvName = dry
+      ? { vi: 'Sữa chống nắng dưỡng ẩm SPF50+', ja: '保湿UVミルク SPF50+' }
+      : { vi: 'Sữa chống nắng dạng nhẹ SPF50+', ja: '軽いUVミルク SPF50+' };
+    var uvDesc = dry
+      ? { vi: 'Cấp ẩm khi chống nắng, không làm da căng khô, bền với mồ hôi', ja: '保湿しながらUV対策。つっぱらず汗にも強い（目標仕様）' }
+      : { vi: 'Mỏng nhẹ, không bết, ít để lại vệt trắng, bền với mồ hôi', ja: '軽くて白浮きしにくく、汗に強い（目標仕様）' };
+    var nightName = dry ? { vi: 'Kem dưỡng đêm', ja: 'ナイトクリーム' } : { vi: 'Gel dưỡng đêm', ja: 'ナイトジェル' };
+    var nightDesc = dry
+      ? { vi: 'Giữ ẩm sâu qua đêm, phục hồi sau một ngày ngoài nắng', ja: '夜のあいだしっかり保湿。日中の疲れ肌を整える' }
+      : { vi: 'Phục hồi sau một ngày ngoài nắng, không gây bí da', ja: '日中の疲れ肌を整える。ベタつかず毛穴に優しい' };
+    var uvFirst = r.uvLv === 2 || r.spf === 2;
+
+    var items = [
+      { k: 'uv', n: uvName, d: uvDesc, p: PRICE.uv, first: uvFirst },
+      { k: 'serum', n: { vi: 'Serum làm sáng', ja: '美白美容液' }, d: p.s, p: PRICE.serum, first: !uvFirst },
+      { k: 'night', n: nightName, d: nightDesc, p: PRICE.night, first: false }
+    ];
+    var prods = items.map(function (it) {
+      return '<div class="prod"><strong>' + t(it.n) + (it.first ? '<span class="tag">' + t(S.start) + '</span>' : '') + '</strong>' +
+        '<p>' + t(it.d) + '</p><div class="price">' + priceHtml(it.p) + '</div></div>';
+    }).join('');
+
+    var L = {
+      cleanse: { vi: 'Rửa mặt', ja: '洗顔' },
+      remove: { vi: 'Tẩy trang & rửa mặt', ja: 'クレンジング・洗顔' },
+      serum: { vi: 'Serum làm sáng', ja: '美白美容液' },
+      uv: { vi: 'Chống nắng', ja: 'UVミルク' },
+      night: nightName
+    };
+    var am = r.time === 0 ? ['cleanse', 'uv'] : ['cleanse', 'serum', 'uv'];
+    var pm = r.time === 0 ? ['cleanse', 'serum'] : ['remove', 'serum', 'night'];
+    function chain(a) { return a.map(function (k) { return t(L[k]); }).join(' → '); }
+    var tip = r.time === 0 ? '<p class="note">' + t(S.time0) + '</p>' : r.time === 2 ? '<p class="note">' + t(S.time2) + '</p>' : '';
+
+    var sum = PRICE.uv + PRICE.serum + PRICE.night;
+    var saveTxt = t(S.save).replace('{x}', dong(sum - PRICE.set));
+
+    var toneVal = t({ vi: S.toneLv.vi[r.toneLv], ja: S.toneLv.ja[r.toneLv] });
+    var uvVal = S.uvLv[state.lang][r.uvLv];
+    return '<div><p class="eyebrow">' + t(S.result) + '</p><h1 class="profile">' + t(p.n) + '</h1></div>' +
+      '<p class="lead">' + t(p.d) + '</p>' +
+
+      '<section class="sec"><h3>' + t(S.meters) + '</h3><div class="meters">' +
+        '<div class="meter"><div class="h"><span>' + t(S.uv) + '</span><span>' + uvVal + ' · ' + r.uv + '</span></div>' +
+          '<div class="bar"><i style="width:' + r.uv + '%;background:var(--' + LV[r.uvLv] + ')"></i></div></div>' +
+        '<div class="meter"><div class="h"><span>' + t(S.tone) + '</span><span>' + toneVal + ' · ' + r.tone + '</span></div>' +
+          '<div class="bar"><i style="width:' + r.tone + '%;background:var(--' + LV[r.toneLv] + ')"></i></div></div>' +
+        '<div class="meter"><div class="h"><span>' + t(S.oil) + '</span><span>' + S.oilLv[state.lang][r.oil] + '</span></div>' +
+          '<div class="bar"><b style="left:' + r.oilPos + '%"></b></div>' +
+          '<div class="ends"><span>' + S.oilEnds[state.lang][0] + '</span><span>' + S.oilEnds[state.lang][1] + '</span></div></div>' +
+      '</div></section>' +
+
+      '<div class="prio"><p class="eyebrow">' + t(S.prio) + '</p><p>' + t(uvFirst ? S.prioUv : S.prioSerum) + '</p></div>' +
+
+      '<section class="sec"><h3>' + t(S.routine) + '</h3><dl class="routine" style="margin:0">' +
+        '<div><dt>' + t(S.am) + '</dt><dd>' + chain(am) + '</dd></div>' +
+        '<div><dt>' + t(S.pm) + '</dt><dd>' + chain(pm) + '</dd></div></dl>' + tip + '</section>' +
+
+      '<section class="sec"><h3>' + t(S.prods) + '</h3><div class="prods">' + prods + '</div></section>' +
+
+      '<section class="offer">' +
+        '<div class="deal"><strong>' + t(S.trial) + '</strong><p>' + t(S.trialD) + '</p><div class="price">' + priceHtml(PRICE.trial) + '</div></div>' +
+        '<div class="deal"><strong>' + t(S.full) + '</strong><p>' + saveTxt + '</p><div class="price"><s>' + dong(sum) + '</s>' + priceHtml(PRICE.set) + '</div></div>' +
+        '<form id="zform" novalidate><label for="zalo">' + t(S.zalo) + '</label>' +
+          '<div class="field"><input id="zalo" name="zalo" type="tel" inputmode="tel" autocomplete="tel" placeholder="' + t(S.zph) + '">' +
+          '<button type="submit" class="cta">' + t(S.send) + '</button></div>' +
+          '<p class="msg" id="zmsg" role="status"></p></form>' +
+      '</section>' +
+
+      '<p class="fine">' + t(S.disc) + (state.lang === 'ja' ? ' ' + t(S.yen) : '') + '</p>' +
+      '<div class="row"><button type="button" class="link" data-act="again">' + t(S.again) + '</button></div>';
+  }
+
+  function render() {
+    document.documentElement.lang = state.lang === 'ja' ? 'ja' : 'vi';
+    root.innerHTML = header() + (state.done ? resultView() : questionView());
+  }
+
+  function go(step) {
+    state.step = step;
+    render();
+  }
+  function finish() {
+    state.done = true;
+    render();
+    try { root.scrollIntoView({ block: 'start' }); } catch (e) {}
+  }
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  root.addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    if (b.dataset.lang) {
+      state.lang = b.dataset.lang;
+      try { localStorage.setItem('sd-lang', state.lang); } catch (x) {}
+      render();
+    } else if (b.dataset.opt !== undefined) {
+      state.ans[state.step] = +b.dataset.opt;
+      render();
+      var next = state.step + 1;
+      setTimeout(function () { next < Q.length ? go(next) : finish(); }, reduce ? 0 : 220);
+    } else if (b.dataset.act === 'back') {
+      go(state.step - 1);
+    } else if (b.dataset.act === 'sample') {
+      state.ans = [1, 1, 1, 1, 1, 1];
+      finish();
+    } else if (b.dataset.act === 'again') {
+      state.ans = []; state.done = false; state.step = 0;
+      render();
+    }
+  });
+
+  root.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = (document.getElementById('zalo').value || '').replace(/\D/g, '');
+    var m = document.getElementById('zmsg');
+    if (v.length < 9) { m.className = 'msg err'; m.textContent = t(S.zerr); return; }
+    m.className = 'msg'; m.textContent = t(S.zok);
+  });
+
+  render();
+})();
+</script>
